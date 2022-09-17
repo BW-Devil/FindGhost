@@ -11,14 +11,15 @@ FindGhost是一款恶意流量分析系统，会实时分析当前网络中的�
 ### :computer: 环境
 运行环境：Linux  
 安装图形化库、编译环境等：  
-Debian / Ubuntu: sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev  
-Fedora: sudo dnf install golang gcc libXcursor-devel libXrandr-devel mesa-libGL-devel libXi-devel libXinerama-devel libXxf86vm-devel  
-Arch Linux: sudo pacman -S go xorg-server-devel libxcursor libxrandr libxinerama libxi  
-Solus: sudo eopkg it -c system.devel golang mesalib-devel libxrandr-devel libxcursor-devel libxi-devel libxinerama-devel  
-openSUSE: sudo zypper install go gcc libXcursor-devel libXrandr-devel Mesa-libGL-devel libXi-devel libXinerama-devel libXxf86vm-devel  
-Void Linux: sudo xbps-install -S go base-devel xorg-server-devel libXrandr-devel libXcursor-devel libXinerama-devel  
+`Debian / Ubuntu: sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev`  
+`Fedora: sudo dnf install golang gcc libXcursor-devel libXrandr-devel mesa-libGL-devel libXi-devel libXinerama-devel libXxf86vm-devel`  
+`Arch Linux: sudo pacman -S go xorg-server-devel libxcursor libxrandr libxinerama libxi`  
+`Solus: sudo eopkg it -c system.devel golang mesalib-devel libxrandr-devel libxcursor-devel libxi-devel libxinerama-devel`  
+`openSUSE: sudo zypper install go gcc libXcursor-devel libXrandr-devel Mesa-libGL-devel libXi-devel libXinerama-devel libXxf86vm-devel`  
+`Void Linux: sudo xbps-install -S go base-devel xorg-server-devel libXrandr-devel libXcursor-devel libXinerama-devel`  
 ### :ghost: 使用
-目前只完成了crawler部分，crawler可以直接以api的形式进行使用，也可以使用gui的方式进行使用，gui的编写使用的是fyne框架。
+目前只完成了crawler部分，crawler可以直接以api的形式进行使用，也可以使用gui的方式进行使用，gui的编写使用的是fyne框架。  
+`./Crawler help`
 ```shell
 NAME:
    Crawler - FindGhost Crawler
@@ -45,14 +46,14 @@ GLOBAL OPTIONS:
    --help, -h     show help (default: false)
    --version, -v  print the version (default: false)
 ```
-启动api模式:`./Crawler web`  
+`./Crawler web`：启动api模式    
 在网页端访问:  
 `http://127.0.0.1:8888/api/ip/x.x.x.x,检测x.x.x.x是否为恶意ip`  
-`http://127.0.0.1:8888/api/domain/x.x.x.x,检测x.x.x.x是否为恶意domain`    
+`http://127.0.0.1:8888/api/domain/x.x.x.x,检测x.x.x.x是否为恶意domain`  
+说明：访问端口，可以在conf/app.ini中修改HTTP_PORT的值 
 ![image](https://user-images.githubusercontent.com/90563485/190837051-5d1f2859-cf11-479c-9701-1b9f1a875922.png)
 ![image](https://user-images.githubusercontent.com/90563485/190837067-282c950a-e8fa-4689-8d77-d9a3c57d2bf2.png)
-访问端口，可以在conf/app.ini中修改HTTP_PORT的值  
-启动gui模式：`./Crawler gui`  
+`./Crawler gui`：启动gui模式  
 说明：要先启动api模式让数据库进行更新，再启动gui模式  
 ![image](https://user-images.githubusercontent.com/90563485/190837193-94d2f46f-1e6a-4376-b791-f840b6353e5e.png)
 ### :sheep: TODO
