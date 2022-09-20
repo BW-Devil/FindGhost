@@ -127,9 +127,35 @@ func CheckSelfHttp(apiUrl string, req *models.HttpInfo) bool {
 	return false
 }
 
+// 检查ipInfo中的ip信息
+
 // 处理ip信息
 func ProcessIp(packet gopacket.Packet) {
-	
+	ipLayer := packet.Layer(layers.LayerTypeIPv4)
+	if ipLayer != nil {
+		ip, _ := ipLayer.(*layers.IPv4)
+		if ip != nil {
+			switch ip.Protocol {
+			case layers.IPProtocolTCP:
+				tcpLayer := packet.Layer(layers.LayerTypeTCP)
+				if tcpLayer != nil {
+					tcp, _ := tcpLayer.(*layers.TCP)
+
+					srcPort := tcp.SrcPort.String()
+					destPort := tcp.DstPort.String()
+
+					ipInfo := models.NewIpInfo("tcp", ip.SrcIP.String(), srcPort, ip.DstIP.String(), destPort)
+
+					// 将ip信息发送到审计系统
+					go func(apiUrl string, ipInfo *models.IpInfo) {
+						if tcp.SYN && !tcp.ACK && !CheckSelfIp(apiUrl, ipInfo) {
+							logrus.Info("send ipInfo to audit server")
+						}
+					}(ApiUrl, ipInfo)
+				}
+			}
+		}
+	}
 }
 
 // 处理dns信息
