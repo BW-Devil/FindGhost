@@ -1,28 +1,30 @@
 package models
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 )
 
-type HttpReq struct {
-	Host          string
-	Ip            string
-	Client        string
-	Port          string
-	URL           *url.URL
-	Header        http.Header
-	RequestURI    string
-	RequestBody   string
-	Method        string
-	ReqParameters url.Values
+// http信息模型
+type HttpInfo struct {
+	SrcIp         string      `json:"srcIp"`
+	SrcPort       string      `json:"srcPort"`
+	DestIp        string      `json:"destIp"`
+	DestPort      string      `json:"destPort"`
+	Host          string      `json:"host"`
+	Method        string      `json:"method"`
+	RequestURI    string      `json:"requestURI"`
+	Header        http.Header `json:"header"`
+	RequestBody   string      `json:"requestBody"`
+	ReqParameters url.Values  `json:"reqParameters"`
 }
 
-func NewHttpReq(req *http.Request, client string, ip string, port string) (httpReq *HttpReq, err error) {
+// 新建http信息模型
+func NewHttpInfo(srcIp, srcPort, destIp, destPort string, req *http.Request) (httpInfo *HttpInfo, err error) {
 	err = req.ParseForm()
-	body := req.Body
-	buff, err := ioutil.ReadAll(body)
-	return &HttpReq{Host: req.Host, Client: client, Ip: ip, Port: port, URL: req.URL, Header: req.Header,
-		RequestURI: req.RequestURI, RequestBody: string(buff), Method: req.Method, ReqParameters: req.Form}, err
+	requestBody, err := io.ReadAll(req.Body)
+	return &HttpInfo{SrcIp: srcIp, SrcPort: srcPort, DestIp: destIp, DestPort: destPort, Host: req.Host,
+		Method: req.Method, RequestURI: req.RequestURI, Header: req.Header, RequestBody: string(requestBody),
+		ReqParameters: req.Form}, err
 }

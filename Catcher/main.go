@@ -2,7 +2,7 @@ package main
 
 import (
 	"FindGhost/Catcher/cmd"
-	"FindGhost/Catcher/util"
+	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"os"
 	"runtime"
@@ -15,14 +15,14 @@ func init() {
 func main() {
 	app := cli.NewApp()
 	app.Name = "FindGhost Catcher"
-	app.Authors = []*cli.Author{{"BWFish", "weunknowing@gmail.com"}}
+	app.Description = "FindGhost Catcher"
 	app.Usage = "FindGhost Catcher"
+	app.Authors = []*cli.Author{{"BWFish", "weunknowing@gmail.com"}}
 	app.Commands = []*cli.Command{
-		cmd.StartUp,
+		cmd.Catch,
 	}
-	app.Flags = append(app.Flags, cmd.StartUp.Flags...)
 
 	if err := app.Run(os.Args); err != nil {
-		util.Log.Fatal(err)
+		logrus.Fatal(err)
 	}
 }
