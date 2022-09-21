@@ -17,6 +17,7 @@ func main() {
 	app.Name = "FindGhost Catcher"
 	app.Description = "FindGhost Catcher"
 	app.Usage = "FindGhost Catcher"
+	app.Version = "1.0.0"
 	app.Authors = []*cli.Author{{"BWFish", "weunknowing@gmail.com"}}
 	app.Commands = []*cli.Command{
 		cmd.Catch,

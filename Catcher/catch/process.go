@@ -1,6 +1,7 @@
 package catch
 
 import (
+	"FindGhost/Catcher/conf"
 	"FindGhost/Catcher/models"
 	"bufio"
 	"github.com/google/gopacket"
@@ -128,6 +129,20 @@ func CheckSelfHttp(apiUrl string, req *models.HttpInfo) bool {
 }
 
 // 检查ipInfo中的ip信息
+func CheckSelfIp(ApiUrl string, ipInfo *models.IpInfo) bool {
+	urlParse, err := url.Parse(ApiUrl)
+	if err == nil {
+		apiHost := urlParse.Host
+		apiIp := strings.Split(apiHost, ":")[0]
+		sensorIp := conf.Ips[0]
+
+		if (ipInfo.SrcIp == sensorIp && ipInfo.DestIp == apiIp) || (ipInfo.SrcIp == apiIp && ipInfo.DestIp == sensorIp) {
+			return true
+		}
+	}
+
+	return false
+}
 
 // 处理ip信息
 func ProcessIp(packet gopacket.Packet) {
@@ -150,6 +165,7 @@ func ProcessIp(packet gopacket.Packet) {
 					go func(apiUrl string, ipInfo *models.IpInfo) {
 						if tcp.SYN && !tcp.ACK && !CheckSelfIp(apiUrl, ipInfo) {
 							logrus.Info("send ipInfo to audit server")
+							_ = SendIpInfo(ipInfo)
 						}
 					}(ApiUrl, ipInfo)
 				}
@@ -160,5 +176,24 @@ func ProcessIp(packet gopacket.Packet) {
 
 // 处理dns信息
 func ProcessDns(packet gopacket.Packet) {
+	var eth layers.Ethernet
+	var ip layers.IPv4
+	var udp layers.UDP
+	var dns layers.DNS
+	parser := gopacket.NewDecodingLayerParser(layers.LayerTypeEthernet, &eth, &ip, &udp, &dns)
+	decodeLayers := make([]gopacket.LayerType, 0)
+	err := parser.DecodeLayers(packet.Data(), &decodeLayers)
+	if err != nil {
+		return
+	}
 
+	srcIp := ip.SrcIP
+	destIp := ip.DstIP
+	for _, q := range dns.Questions {
+		dnsInfo := models.NewDnsInfo(q.Type.String(), string(q.Name), srcIp.String(), destIp.String())
+		go func(apiUrl string, dnsInfo *models.DnsInfo) {
+			logrus.Info("send dnsinfo to audit server")
+			_ = SendDnsInfo(dnsInfo)
+		}(ApiUrl, dnsInfo)
+	}
 }
