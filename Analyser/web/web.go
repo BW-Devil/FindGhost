@@ -2,6 +2,7 @@ package web
 
 import (
 	"FindGhost/Analyser/conf"
+	"FindGhost/Analyser/web/routers"
 	"github.com/flamego/flamego"
 	"github.com/urfave/cli/v2"
 )
@@ -20,7 +21,17 @@ func init() {
 func RunWeb(cCtx *cli.Context) (err error) {
 	f := flamego.Classic()
 
+	// 主页
 	f.Get("/")
+
+	// ipInfo的审计路由
+	f.Post("/api/ip/", routers.ProcessIpInfo)
+
+	// dnsInfo的审计路由
+	f.Post("/api/dns/", routers.ProcessDnsInfo)
+
+	// httpInfo的审计路由
+	f.Post("/api/http/", routers.ProcessHttpInfo)
 
 	f.Run(HTTP_HOST, HTTP_PORT)
 	return err

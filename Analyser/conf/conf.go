@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	Cfg    *ini.File
-	DEBUG  bool
-	SECRET string
+	Cfg       *ini.File
+	DebugMode bool
+	SecureKey string
 )
 
 func init() {
@@ -20,6 +20,6 @@ func init() {
 		util.Log.Panicln(err)
 	}
 
-	DEBUG = Cfg.Section("").Key("DEBUG").MustBool(true)
-	SECRET = Cfg.Section("").Key("SECRET_KEY").MustString("")
+	DebugMode = Cfg.Section("").Key("DEBUG_MODE").MustBool(false)
+	SecureKey = Cfg.Section("").Key("SECURE_KEY").MustString("")
 }
