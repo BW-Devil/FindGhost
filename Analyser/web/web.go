@@ -21,8 +21,13 @@ func init() {
 
 func RunWeb(cCtx *cli.Context) (err error) {
 	f := flamego.Classic()
+
 	// 使用template中间件渲染html页面
-	f.Use(template.Templater())
+	f.Use(template.Templater(
+		template.Options{
+			Directory: "web/templates",
+		},
+	))
 
 	// 设置静态资源
 	f.Use(flamego.Static(
@@ -37,6 +42,12 @@ func RunWeb(cCtx *cli.Context) (err error) {
 
 	// 显示所有恶意ip
 	f.Get("/ip/", routers.IpList)
+
+	// 显示所有恶意dns
+	f.Get("/dns/", routers.DnsList)
+
+	// 显示所有恶意http
+	f.Get("/http/", routers.HttpList)
 
 	// ipInfo的审计路由
 	f.Post("/api/ip/", routers.ProcessIpInfo)
