@@ -15,6 +15,7 @@ require (
 	github.com/alecthomas/participle/v2 v2.0.0-alpha9 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/fatih/color v1.13.0 // indirect
+	github.com/flamego/template v1.0.0 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect

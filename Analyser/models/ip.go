@@ -101,3 +101,8 @@ func (e *EvilIpInfo) Exist() bool {
 
 	return false
 }
+
+// 取出所有恶意ip
+func ListEvilIps() {
+	
+}

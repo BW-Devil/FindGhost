@@ -4,6 +4,7 @@ import (
 	"FindGhost/Analyser/conf"
 	"FindGhost/Analyser/web/routers"
 	"github.com/flamego/flamego"
+	"github.com/flamego/template"
 	"github.com/urfave/cli/v2"
 )
 
@@ -20,9 +21,22 @@ func init() {
 
 func RunWeb(cCtx *cli.Context) (err error) {
 	f := flamego.Classic()
+	// 使用template中间件渲染html页面
+	f.Use(template.Templater())
+
+	// 设置静态资源
+	f.Use(flamego.Static(
+		flamego.StaticOptions{
+			Directory: "web/public",
+			Index:     "ip.html",
+		},
+	))
 
 	// 主页
-	f.Get("/")
+	f.Get("/", routers.IpList)
+
+	// 显示所有恶意ip
+	f.Get("/ip/", routers.IpList)
 
 	// ipInfo的审计路由
 	f.Post("/api/ip/", routers.ProcessIpInfo)
