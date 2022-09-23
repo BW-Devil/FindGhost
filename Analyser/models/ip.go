@@ -103,6 +103,31 @@ func (e *EvilIpInfo) Exist() bool {
 }
 
 // 取出所有恶意ip
-func ListEvilIps() {
-	
+func ListEvilIps() []EvilIpInfo {
+	evilIpInfos := make([]EvilIpInfo, 0)
+
+	cur, err := Database.Collection("evilip_list").Find(context.TODO(), bson.D{{}})
+	if err != nil {
+		util.Log.Fatal(err)
+	}
+
+	// 遍历查询的元素
+	for cur.Next(context.TODO()) {
+		var evilIpInfo EvilIpInfo
+		err := cur.Decode(&evilIpInfo)
+		if err != nil {
+			util.Log.Fatal(err)
+		}
+
+		evilIpInfos = append(evilIpInfos, evilIpInfo)
+	}
+
+	if err := cur.Err(); err != nil {
+		util.Log.Fatal(err)
+	}
+
+	// 关闭游标
+	cur.Close(context.TODO())
+
+	return evilIpInfos
 }

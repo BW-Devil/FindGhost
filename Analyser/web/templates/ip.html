@@ -1,12 +1,49 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>FindGhost Analyser</title>
-</head>
-<body>
-    <p>{{.name}}</p>
-    <p>{{.age}}</p>
-</body>
+    <head>
+        <title>FindGhost Analyser</title>
+        <link rel="stylesheet" href="/css/index.css">
+    </head>
+
+    <body>
+        <p>
+            <a href="/ip/">Evil IP</a> || <a href="/dns/">Evil DNS</a> || <a href="/http/">Evil HTTP</a>
+        </p>
+        <h2>Evil IP List</h2>
+        <table class="bordered">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>SensorIp</th>
+                    <th>EvilIp</th>
+                    <th>Protocol</th>
+                    <th>SrcIp</th>
+                    <th>SrcPort</th>
+                    <th>DestIp</th>
+                    <th>DestPort</th>
+                    <th>Info</th>
+                </tr>
+            </thead>
+            {{range .evilIps }}
+            <tr>
+                <td>{{ .Time.Format "2006-01-02 15:04:05"}}</td>
+                <td>{{ .SensorIp }}</td>
+                <td>{{ .EvilIp }}</td>
+                <td>{{ .Protocol }}</td>
+                <td>{{ .SrcIp }}</td>
+                <td>{{ .SrcPort }}</td>
+                <td>{{ .DestIp }}</td>
+                <td>{{ .DestPort }}</td>
+                <td>
+                    {{ range $k, $v := .Info }}
+                    <pre>Desc: {{ $v.Desc }}</pre>
+                    <pre>Source: {{ $v.Source }}</pre>
+                    {{ end }}
+                </td>
+            </tr>
+            {{end}}
+        </table>
+    </body>
 </html>
 
 
