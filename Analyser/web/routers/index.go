@@ -16,7 +16,9 @@ func IpList(fCtx flamego.Context, t template.Template, tData template.Data) {
 
 // 列出所有恶意dns
 func DnsList(fCtx flamego.Context, t template.Template, tData template.Data) {
-
+	evilDnsInfos := models.ListEvilDns()
+	tData["evilDns"] = evilDnsInfos
+	t.HTML(http.StatusOK, "dns")
 }
 
 // 列出所有恶意http

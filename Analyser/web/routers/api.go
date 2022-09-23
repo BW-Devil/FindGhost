@@ -31,7 +31,22 @@ func ProcessIpInfo(fCtx flamego.Context) {
 
 // 分析dnsInfo
 func ProcessDnsInfo(fCtx flamego.Context) {
+	_ = fCtx.Request().ParseForm()
+	timeStamp := fCtx.Request().Form.Get("timeStamp")
+	secureKey := fCtx.Request().Form.Get("secureKey")
+	data := fCtx.Request().Form.Get("data")
+	sensorIp := fCtx.Request().RemoteAddr
 
+	// 验证签名
+	if secureKey == util.MakeSign(timeStamp, conf.SecureKey) {
+		var dnsInfo models.DnsInfo
+		err := json.Unmarshal([]byte(data), &dnsInfo)
+		if err == nil {
+			go func(sensorIp string, dnsInfo models.DnsInfo) {
+				audit.AuditDnsInfo(sensorIp, dnsInfo)
+			}(sensorIp, dnsInfo)
+		}
+	}
 }
 
 // 分析httpInfo

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FindGhost Analyser</title>
+        <link rel="stylesheet" href="/css/index.css">
+    </head>
+    <body>
+        <p>
+            <a href="/ip/">Evil IP</a> || <a href="/dns/">Evil DNS</a> || <a href="/http/">Evil HTTP</a>
+        </p>
+        <h2>Evil Domain List</h2>
+        <table class="bordered">
+            <thead>
+            <tr>
+                <th>Time</th>
+                <th>Sensor IP</th>
+                <th>DnsType</th>
+                <th>SrcIp</th>
+                <th>DestIp</th>
+                <th>EvilDomain</th>
+                <th>Info</th>
+            </tr>
+            </thead>
+            {{range .evilDns }}
+            <tr>
+                <td>{{ .Time.Format "2006-01-02 15:04:05" }}</td>
+                <td>{{ .SensorIp }}</td>
+                <td>{{ .DnsType }}</td>
+                <td>{{ .SrcIp}}</td>
+                <td>{{ .DestIp}}</td>
+                <td>{{ .EvilDomain}}</td>
+                <td>
+                    {{ range $k, $v := .Info }}
+                    <pre>Desc: {{ $v.Desc }}</pre>
+                    <pre>Source: {{ $v.Source }}</pre>
+                    {{ end }}
+                </td>
+            </tr>
+            {{end}}
+        </table>
+    </body>
+</html>

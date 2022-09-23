@@ -45,3 +45,22 @@ func AuditIpInfo(sensorIp string, ipInfo models.IpInfo) {
 		}
 	}
 }
+
+// 审计dns
+func AuditDnsInfo(sensorIp string, dnsInfo models.DnsInfo) {
+	domain := dnsInfo.DnsName
+	auditDnsUrl := fmt.Sprintf("%v%v%v", ApiUrl, "/api/domain/", domain)
+	resp, err := http.Get(auditDnsUrl)
+	var auditDnsRes models.DomainListApi
+	if err == nil {
+		respBody, err := io.ReadAll(resp.Body)
+		if err == nil {
+			err = json.Unmarshal(respBody, &auditDnsRes)
+			isEvil := auditDnsRes.Evil
+			if isEvil {
+				evilDnsInfo := models.NewEvilDnsInfo(sensorIp, dnsInfo, auditDnsRes)
+				evilDnsInfo.Insert()
+			}
+		}
+	}
+}
