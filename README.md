@@ -13,13 +13,15 @@ FindGhost是一款恶意流量分析系统，会实时分析当前网络中的�
 抓包库：libpcap  
 数据库：mongodb  
 ### :ghost: 使用
-#### 安装图形化库、编译环境等：  
-`Debian / Ubuntu: sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev`  
-`Fedora: sudo dnf install golang gcc libXcursor-devel libXrandr-devel mesa-libGL-devel libXi-devel libXinerama-devel libXxf86vm-devel`  
-`Arch Linux: sudo pacman -S go xorg-server-devel libxcursor libxrandr libxinerama libxi`  
-`Solus: sudo eopkg it -c system.devel golang mesalib-devel libxrandr-devel libxcursor-devel libxi-devel libxinerama-devel`  
-`openSUSE: sudo zypper install go gcc libXcursor-devel libXrandr-devel Mesa-libGL-devel libXi-devel libXinerama-devel libXxf86vm-devel`  
-`Void Linux: sudo xbps-install -S go base-devel xorg-server-devel libXrandr-devel libXcursor-devel libXinerama-devel`  
+#### 安装图形化库、编译环境等：
+```shell
+Debian/Ubuntu: sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev
+Fedora: sudo dnf install golang gcc libXcursor-devel libXrandr-devel mesa-libGL-devel libXi-devel libXinerama-devel libXxf86vm-devel
+Arch Linux: sudo pacman -S go xorg-server-devel libxcursor libxrandr libxinerama libxi
+Solus: sudo eopkg it -c system.devel golang mesalib-devel libxrandr-devel libxcursor-devel libxi-devel libxinerama-devel
+openSUSE: sudo zypper install go gcc libXcursor-devel libXrandr-devel Mesa-libGL-devel libXi-devel libXinerama-devel libXxf86vm-devel
+Void Linux: sudo xbps-install -S go base-devel xorg-server-devel libXrandr-devel libXcursor-devel libXinerama-devel
+```  
 #### 启动各个组件
 1.进入crawler文件夹，使用命令`./Crawler web`启动爬虫，更新数据  
 2.进入analyser文件夹，使用命令`./Analyser start`启动分析器  
