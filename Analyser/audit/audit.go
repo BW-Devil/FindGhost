@@ -64,3 +64,31 @@ func AuditDnsInfo(sensorIp string, dnsInfo models.DnsInfo) {
 		}
 	}
 }
+
+// 审计http
+func AuditHttpInfo(sensorIp string, httpInfo models.HttpInfo) {
+	ips := make([]string, 0)
+	ips = append(ips, httpInfo.SrcIp, httpInfo.DestIp)
+
+	// 逐个审计ip
+	for _, ip := range ips {
+		if ip == sensorIp {
+			continue
+		}
+
+		auditIpUrl := fmt.Sprintf("%v%v%v", ApiUrl, "/api/ip/", ip)
+		resp, err := http.Get(auditIpUrl)
+		var auditIpRes models.IpListApi
+		if err == nil {
+			respBody, err := io.ReadAll(resp.Body)
+			if err == nil {
+				err = json.Unmarshal(respBody, &auditIpRes)
+				isEvil := auditIpRes.Evil
+				if isEvil {
+					evilHttpInfo := models.NewEvilHttpInfo(sensorIp, httpInfo, auditIpRes)
+					evilHttpInfo.Insert()
+				}
+			}
+		}
+	}
+}

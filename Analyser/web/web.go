@@ -33,7 +33,6 @@ func RunWeb(cCtx *cli.Context) (err error) {
 	f.Use(flamego.Static(
 		flamego.StaticOptions{
 			Directory: "web/public",
-			Index:     "ip.html",
 		},
 	))
 

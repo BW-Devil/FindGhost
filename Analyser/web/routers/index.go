@@ -23,5 +23,7 @@ func DnsList(fCtx flamego.Context, t template.Template, tData template.Data) {
 
 // 列出所有恶意http
 func HttpList(fCtx flamego.Context, t template.Template, tData template.Data) {
-
+	evilHttpInfos := models.ListEvilHttp()
+	tData["evilHttp"] = evilHttpInfos
+	t.HTML(http.StatusOK, "http")
 }
