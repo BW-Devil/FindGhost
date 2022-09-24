@@ -13,7 +13,7 @@ FindGhost是一款恶意流量分析系统，会实时分析当前网络中的�
 抓包库：libpcap  
 数据库：mongodb  
 ### :ghost: 使用
-#### 安装图形化库、编译环境等：
+#### 安装图形化库、编译环境等
 ```shell
 Debian/Ubuntu: sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev
 Fedora: sudo dnf install golang gcc libXcursor-devel libXrandr-devel mesa-libGL-devel libXi-devel libXinerama-devel libXxf86vm-devel
